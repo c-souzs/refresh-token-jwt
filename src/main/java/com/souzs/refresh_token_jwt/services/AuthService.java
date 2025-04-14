@@ -90,7 +90,11 @@ public class AuthService {
                 () -> new AuthException("Refresh Token inválido.")
         );
 
-        if(refreshToken != null && jwtUtils.validateJwtToken(refreshTokenCookie)) {
+        if(
+                refreshToken != null &&
+                jwtUtils.validateJwtToken(refreshTokenCookie) &&
+                refreshTokenCookie.equals(refreshToken.getToken())
+        ) {
             String newAccessToken = jwtUtils.generateAccessJwt(refreshToken.getUser());
             ResponseCookie cookieAccessToken = jwtUtils.setAccessTokenCookie(newAccessToken);
 
